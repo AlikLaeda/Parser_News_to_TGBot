@@ -8,6 +8,7 @@
 
 from aiogram import Bot, Dispatcher, types, F
 from aiogram.enums import ParseMode
+from aiogram.client.bot import DefaultBotProperties
 from aiogram.types import Message
 from aiogram.filters import CommandStart
 
@@ -30,7 +31,7 @@ import asyncio
 import logging
 import sys
 
-bot = Bot(token, parse_mode=ParseMode.HTML)
+bot = Bot(token, default=DefaultBotProperties(parse_mode=ParseMode.HTML))
 dp = Dispatcher()
 last_message = ''
 
@@ -66,7 +67,7 @@ async def inline_answer_button_comment(c_q: types.CallbackQuery):
     article_link = c_q.message.text.split('\n')[0]
     news_with_comment =  f'{article_link}\n\n'\
             f'<b><i>{last_message}</i></b>'
-    await bot.send_message(chat_id=bot_chat_id, text=news_with_comment)
+    await bot.send_message(chat_id=kk_channel_id, text=news_with_comment)
     await bot.edit_message_reply_markup(
         chat_id=c_q.message.chat.id, 
         message_id=c_q.message.message_id,
@@ -84,7 +85,7 @@ async def inline_answer_button_text(c_q: types.CallbackQuery):
     news_text = f'{article_name} \n\n'  \
             f'{article_text} \n\n'\
             f'<a href="{article_link}">Ссылка</a>'
-    await bot.send_message(chat_id=bot_chat_id, text=news_text)
+    await bot.send_message(chat_id=kk_channel_id, text=news_text)
     await bot.edit_message_reply_markup(
         chat_id=c_q.message.chat.id, 
         message_id=c_q.message.message_id,
@@ -148,7 +149,7 @@ async def job(message='stuff', n=1):
     
 
 async def scheduler():
-    schedule.every().hours.at('00:08').do(start_regions_ru)
+    schedule.every().hours.at('00:11').do(start_regions_ru)
 #    schedule.every().hours.at('00:39').do(start_updates_ck)
     while True:
         await schedule.run_pending()

@@ -34,7 +34,8 @@ def str_to_time(time_str):
     if time_str.count('назад'):
         current_day = time.mktime(time.localtime())
         current_day -= time.localtime(current_day).tm_sec
-        date = current_day - (int(time_str[:3]) * 60)
+        date = current_day - (int(time_str[:2]) * 60)
+
         
     else:
         # Записываем текущее время в секундах и вычитаем время от начала
@@ -144,6 +145,7 @@ def parse_regions_ru(sity):
             a_text = a_text + soup_i.find("div",
                             class_="article news-content news-article").get_text()
             a_text = re.sub(r'\n+.+\n.+\n+.+ \d\d:\d\d\n\s+','',a_text,count=1)
+            a_text = re.sub(r'\n+.+\n.+\n+\s+\d+ минут назад\s+','',a_text,count=1)
             a_text = re.sub(r'\n+\s+ Фото: .+\s+',r'\n',a_text,count=0)
             a_text = re.sub(r'\n\s+',r'\n',a_text,count=0)
             try:
